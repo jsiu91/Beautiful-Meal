@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="home-meal">
+    <div class="user-header">
+        <h1>Hello, {{ user.name }}. Check out your plans and meals!</h1>
+        <div class="row justify-content-end">
+            <div class="col-2 align-self-end">
+                <a href="/users/edit/{{ user.username }}" class="btn btn-success">Edit user</a>
+            </div>
+            <div class="col-2">
+                <form action="/users/{{ user.username }}/delete" method="POST">
+                    <button class="btn btn-danger" 
+                    onclick="return confirm('Are you sure you want to delete this user?');">
+                    Delete this account
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-6">
+                <h1>Daily Meals</h1>
+                    <h3>Breakfast</h3>
+                    <h3>Lunch</h3>
+                    <h3>Dinner</h3>
+            </div>
+            <div class="col-6">
+                <h1>My plans</h1>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="home-meal">
+    <div class="container-home-header">
+        <h1>Search Ingredients to add to your plan or daily values!</h1>
+        <form id="search_recipe_form" class="row g-2">
+            <div class="col-auto">
+                <label for="recipe" class="p-2">Search Recipe:</label>
+            </div>
+            <div class="col-auto">
+                <input name="recipe" class="form-control" placeholder="Search Ingredient for Recipe" id="search_box">
+            </div>
+            <div class="col-auto">
+                <button class="btn btn-default">
+                    <span class="fa fa-search"></span>
+                </button>
+            </div>
+        </form>
+
+        <form id="search_ingredient_form" class="row g-2">
+            <div class="col-auto">
+                <label for="recipe" class="p-2">Search Ingredient:</label>
+            </div>
+            <div class="col-auto">
+                <input name="recipe" class="form-control" placeholder="Search Ingredient for Data" id="search_box_2">
+            </div>
+            <div class="col-auto">
+                <button class="btn btn-default" for="">
+                    <span class="fa fa-search"></span>
+                </button>
+            </div>
+        </form>
+        <div id="search_result">
+        </div>
+    </div>
+</div>
+{% endblock %}
+
