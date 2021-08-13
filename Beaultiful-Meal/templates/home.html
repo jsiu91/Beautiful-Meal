@@ -32,6 +32,8 @@
         </form>
         <div id="search_result">
         </div>
+        <label id="hidden_user" name="{{g.user.username}}" style="display: none;"></label>
+        <label id="hidden_plans" style="display: none;">{% for recipe in recipes %}{{recipe.name}},{% endfor %}</label>
     </div>
 </div>
 {% endblock %}

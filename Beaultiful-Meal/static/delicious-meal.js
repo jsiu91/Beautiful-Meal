@@ -11,7 +11,6 @@ const BASE_API_FOOD = 'https://api.edamam.com/api/food-database/v2/parser';
 /********* HOME FUNCTIONS *****************************************************/
 /** processRecipeForm: get data from form and make AJAX call to our 
  * Edamam's recipe form. */
-
 async function processRecipeForm (evt) {
 	evt.preventDefault();
 
@@ -29,7 +28,6 @@ async function processRecipeForm (evt) {
 }
 
 /** handleRecipeResponse: deal with response from Edamam's recipe API. */
-
 function handleRecipeResponse (res) {
 	const $result = $('#search_result');
 	const recipes = res.data.hits;
@@ -41,10 +39,10 @@ function handleRecipeResponse (res) {
 }
 
 /** renderRecipe: return html to render on homepage */
-
 function renderRecipe (recipe) {
 	let ingredients = recipe.recipe.ingredients;
 	let image = recipe.recipe.image;
+	const $username = $('#hidden_user').attr('name').toString();
 
 	return `
         <div class="row">
@@ -73,18 +71,9 @@ function renderRecipe (recipe) {
                         Add Daily
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="btn_add_daily">
-                        <li><a id="add_breakfast" class="dropdown-item" href="/users/add_breakfast" onclick="addingBreakfast(event);">Breakfast</a></li>
-                        <li><a id="add_lunch" class="dropdown-item" href="#">Lunch</a></li>
-                        <li><a id="add_dinner" class="dropdown-item" href="#">Dinner</a></li>
-                    </ul>
-                    <button id="btn_add_month" class="btn btn-primary dropdown-toggle"
-                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="far fa-calendar-alt"></i>
-                        Add Month
-                    </button>
-                    <ul class="dropdown-menu" aria-labelledby="btn_add_month">
-                        <li><a class="dropdown-item" href="#">This Month</a></li>
-                        <li><a class="dropdown-item" href="#">Next Month</a></li>
+                        <li><a id="add_breakfast" class="dropdown-item" onclick="addingBreakfast(event, '${$username}');">Breakfast</a></li>
+                        <li><a id="add_lunch" class="dropdown-item" onclick="addingLunch(event, '${$username}');">Lunch</a></li>
+                        <li><a id="add_dinner" class="dropdown-item" onclick="addingDinner(event, '${$username}');">Dinner</a></li>
                     </ul>
                 </div>
             </div>
@@ -94,7 +83,6 @@ function renderRecipe (recipe) {
 
 /** processIngredientsForm: get data from form and make AJAX call to our 
  * Edamam's ingredient form. */
-
 async function processIngredientForm (evt) {
 	evt.preventDefault();
 
@@ -108,7 +96,6 @@ async function processIngredientForm (evt) {
 }
 
 /** handleIngredientResponse: deal with response from Edamam's ingredient API. */
-
 function handleIngredientResponse (res) {
 	const $result = $('#search_result');
 	const ingredients = res.data.hints;
@@ -120,10 +107,13 @@ function handleIngredientResponse (res) {
 }
 
 /** renderIngredient: return html to render on homepage */
-
 function renderIngredient (food) {
 	let nutrients = food.food.nutrients;
 	let image = food.food.image;
+	const $username = $('#hidden_user').attr('name').toString();
+	const plans = $('#hidden_plans').text().split(',');
+
+	const htmlPlans = addPlans(plans, $username);
 
 	return `
         <div class="row">
@@ -132,11 +122,11 @@ function renderIngredient (food) {
                 <img src=${image} onError="this.onerror=null; this.className='default-image'; this.src='/static/images/no-image-found.png';"></a>
                 <h4>Category: ${food.food.category}</h4>
                 <ul class="list-group">
-                    <li class="list-group-item">ENERC_KCAL : <b>${nutrients.ENERC_KCAL.toFixed(0)}</b></li>
-                    <li class="list-group-item">PROCNT : <b>${nutrients.PROCNT.toFixed(0)}</b></li>
-                    <li class="list-group-item">FAT : <b>${nutrients.FAT.toFixed(0)}</b></li>
-                    <li class="list-group-item">CHOCDF : <b>${nutrients.CHOCDF.toFixed(0)}</b></li>
-                    <li class="list-group-item">FIBTG : <b>${nutrients.FIBTG.toFixed(0)}</b></li>
+                    <li id="kcal" class="list-group-item">ENERGY (KCAL) : <b>${nutrients.ENERC_KCAL.toFixed(0)}</b></li>
+                    <li id="pro" class="list-group-item">PROTEIN : <b>${nutrients.PROCNT.toFixed(0)}</b></li>
+                    <li id="fat" class="list-group-item">FAT : <b>${nutrients.FAT.toFixed(0)}</b></li>
+                    <li id="car" class="list-group-item">CARBOHYDRATES : <b>${nutrients.CHOCDF.toFixed(0)}</b></li>
+                    <li id="fib" class="list-group-item">DIETARY FIBER : <b>${nutrients.FIBTG.toFixed(0)}</b></li>
                 </ul>
                 <div class="dropdown">
                     <button id="btn_add_daily" class="btn btn-success dropdown-toggle"
@@ -145,15 +135,9 @@ function renderIngredient (food) {
                         Add to Recipe
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="btn_add_recipe">
-                        <ul class="dropdown-menu" aria-labelledby="btn_add_recipe">
-                            <li><a class="dropdown-item" href="#">Quantity</a></li>
-                        </ul>
+                        ${htmlPlans}
+                        <li><a id="new_recipe" class="dropdown-item" href="/users/add_recipe">New Recipe</a></li>
                     </ul>
-                    <button id="btn_add_month" class="btn btn-primary dropdown-toggle"
-                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="far fa-calendar-alt"></i>
-                        Add Month
-                    </button>
                 </div>
             </div>
         </div>
@@ -161,12 +145,17 @@ function renderIngredient (food) {
 }
 
 /********* ADDING DAILY/MONTHLY MEALS FUNCTIONS **********************************************/
-async function addingBreakfast (evt) {
+/** addingBreakfast: sends POST request to server with JSON values (name, calories, username) */
+async function addingBreakfast (evt, username) {
+	evt.preventDefault();
+
 	const $column = $(evt.target).parents('div').last().prevObject;
 	const $name = $column.children('h3').text();
 	const $calories = $column.children('p').text().replace(/\D/g, '');
 
-	const res = await axios({
+	axios.defaults.withCredentials = true;
+
+	await axios({
 		method: 'post',
 		url: 'http://localhost:5000/users/add_breakfast',
 		headers: {
@@ -175,14 +164,180 @@ async function addingBreakfast (evt) {
 		},
 		data: {
 			name: $name,
+			username: username,
+			calories: $calories,
+		},
+		withCredentials: true,
+		credentials: 'same-origin',
+	});
+}
+/** addingLunch: sends POST request to server with JSON values (name, calories, username) */
+async function addingLunch (evt, username) {
+	evt.preventDefault();
+
+	const $column = $(evt.target).parents('div').last().prevObject;
+	const $name = $column.children('h3').text();
+	const $calories = $column.children('p').text().replace(/\D/g, '');
+
+	axios.defaults.withCredentials = true;
+
+	await axios({
+		method: 'post',
+		url: 'http://localhost:5000/users/add_lunch',
+		headers: {
+			'Content-Type': 'application/json',
+			'Access-Control-Allow-Origin': '*',
+		},
+		data: {
+			name: $name,
+			username: username,
 			calories: $calories,
 		},
 	});
-	console.log(res);
 }
 
+/** addingDinner: sends POST request to server with JSON values (name, calories, username) */
+async function addingDinner (evt, username) {
+	evt.preventDefault();
+
+	const $column = $(evt.target).parents('div').last().prevObject;
+	const $name = $column.children('h3').text();
+	const $calories = $column.children('p').text().replace(/\D/g, '');
+
+	axios.defaults.withCredentials = true;
+
+	await axios({
+		method: 'post',
+		url: 'http://localhost:5000/users/add_dinner',
+		headers: {
+			'Content-Type': 'application/json',
+			'Access-Control-Allow-Origin': '*',
+		},
+		data: {
+			name: $name,
+			username: username,
+			calories: $calories,
+		},
+	});
+}
+/** addPlans: returns a html list rendering for all the plans available for the user */
+function addPlans (plans, username) {
+	let result = '';
+	plans.splice(-1);
+
+	for (plan of plans) {
+		result += `<li><a id="new_recipe" class="dropdown-item" 
+        onclick="addingIngredient(event,'${username}');">${plan}</a></li>`;
+	}
+
+	return result;
+}
+
+/********* ADDING INGREDIENTS/RECIPE FUNCTIONS **********************************************/
+/** addingIngredient: sends POST request to server with 
+ * JSON values(recipe_name, name, energy, protein, fat, carbohydrates, fiber)  */
+async function addingIngredient (evt, username) {
+	evt.preventDefault();
+
+	const $column = $(evt.target).parents('div').last().prevObject;
+	const $recipe_name = $(evt.target).text();
+	const $name = $column.children('h3').text();
+	const $energy = $column.children('ul').children('#kcal').text().replace(/\D/g, '');
+	const $protein = $column.children('ul').children('#pro').text().replace(/\D/g, '');
+	const $fat = $column.children('ul').children('#fat').text().replace(/\D/g, '');
+	const $carbohydrates = $column.children('ul').children('#car').text().replace(/\D/g, '');
+	const $fiber = $column.children('ul').children('#fib').text().replace(/\D/g, '');
+
+	await axios({
+		method: 'post',
+		url: 'http://localhost:5000/users/add_ingredient',
+		headers: {
+			'Content-Type': 'application/json',
+			'Access-Control-Allow-Origin': '*',
+		},
+		data: {
+			recipe_name: $recipe_name,
+			name: $name,
+			username: username,
+			energy: $energy,
+			protein: $protein,
+			fat: $fat,
+			carbohydrates: $carbohydrates,
+			fiber: $fiber,
+		},
+	}).then((res) => {
+		console.log(res);
+	});
+}
+
+/** addingRecipeToBreakfast: sends POST request to server with JSON values (name, calories, username) */
+async function addingRecipeToBreakfast (evt, username) {
+	evt.preventDefault();
+
+	const $column = $(evt.target).parents('div').last().prevObject;
+	const $name = $column.children('p').text();
+	const $calories = $column.children('ul').children('#kcal').text().replace(/\D/g, '');
+
+	await axios({
+		method: 'post',
+		url: 'http://localhost:5000/users/add_breakfast',
+		headers: {
+			'Content-Type': 'application/json',
+			'Access-Control-Allow-Origin': '*',
+		},
+		data: {
+			name: $name,
+			username: username,
+			calories: $calories,
+		},
+	});
+}
+
+/** addingRecipeToLunch: sends POST request to server with JSON values (name, calories, username) */
+async function addingRecipeToLunch (evt, username) {
+	evt.preventDefault();
+
+	const $column = $(evt.target).parents('div').last().prevObject;
+	const $name = $column.children('p').text();
+	const $calories = $column.children('ul').children('#kcal').text().replace(/\D/g, '');
+
+	await axios({
+		method: 'post',
+		url: 'http://localhost:5000/users/add_lunch',
+		headers: {
+			'Content-Type': 'application/json',
+			'Access-Control-Allow-Origin': '*',
+		},
+		data: {
+			name: $name,
+			username: username,
+			calories: $calories,
+		},
+	});
+}
+
+/** addingRecipeToDinner: sends POST request to server with JSON values (name, calories, username) */
+async function addingRecipeToDinner (evt, username) {
+	evt.preventDefault();
+
+	const $column = $(evt.target).parents('div').last().prevObject;
+	const $name = $column.children('p').text();
+	const $calories = $column.children('ul').children('#kcal').text().replace(/\D/g, '');
+
+	await axios({
+		method: 'post',
+		url: 'http://localhost:5000/users/add_dinner',
+		headers: {
+			'Content-Type': 'application/json',
+			'Access-Control-Allow-Origin': '*',
+		},
+		data: {
+			name: $name,
+			username: username,
+			calories: $calories,
+		},
+	});
+}
 /********* JQUERY SELECTIONS AND PROCESSING**********************************************/
 $('#search_recipe_form').on('submit', processRecipeForm);
 $('#search_ingredient_form').on('submit', processIngredientForm);
-
-$('#add_breakfast').closest('button').on('click', addingBreakfast);

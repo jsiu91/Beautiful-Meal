@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="home-meal">
+    <div class="container-recipe-header">
+        <div class="row justify-content-md-center">
+            <div class="col-md-7">
+                <h2 class="join-message">Starting your own meal? Create a New Recipe!</h2>
+                
+                <form method="POST" id="user_form">
+                {{ form.hidden_tag() }}
+
+                {% for field in form if field.widget.input_type != 'hidden' %}
+                    {% for error in field.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                    {% endfor %}
+                    {{ field(placeholder=field.label.text, class="form-control") }}
+                {% endfor %}
+
+                <button class="btn btn-primary btn-lg btn-block">Create New Recipe!</button>
+                </form>
+            </div>
+        </div>   
+    </div> 
+    <div class="container">
+        <div class="row justify-content-left">
+                <br>
+                <h2>My Recipes</h2>
+                {% for recipe in recipes %}
+                <div class="col-sm-recipe">
+                    <p class="h4">{{ recipe.name }} </p>
+                    <b>Ingredients:</b>
+                    <ol>
+                        {% for ingredient in recipe.ingredients %}
+                            <b><li>{{ ingredient.name }}</li></b>
+                        {% endfor %}
+                    </ol>
+                    <b>Nutrients:</b>
+                    <ul>
+                        <li id="kcal"><b>Energy (KCAL):</b> {{ recipe.energy }}</li> 
+                        <li><b>Protein:</b> {{ recipe.protein }}</li> 
+                        <li><b>Fat:</b> {{ recipe.fat }}</li> 
+                        <li><b>Carbohydrates:</b> {{ recipe.carbohydrates }}</li> 
+                        <li><b>Fiber:</b> {{ recipe.fiber }}</li> 
+                    </ul>
+                    <button class="btn btn-warning" 
+                        onclick="addingRecipeToBreakfast(event, '{{ g.user.username }}');">
+                        Add to Breakfast
+                    </button>
+                    <button class="btn btn-success"
+                        onclick="addingRecipeToLunch(event, '{{ g.user.username }}');">    
+                        Add to Lunch
+                    </button>
+                    <button class="btn btn-info"
+                        onclick="addingRecipeToDinner(event, '{{ g.user.username }}');">
+                        Add to Dinner
+                    </button>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

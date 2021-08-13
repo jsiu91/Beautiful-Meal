@@ -16,7 +16,6 @@
   <link rel="stylesheet"
         href="https://use.fontawesome.com/releases/v5.15.3/css/all.css">
   <link rel="stylesheet" href="/static/stylesheets/style.css">
-  <link rel="shortcut icon" href="/static/favicon.ico">
 
 </head>
 
@@ -26,20 +25,10 @@
     <div class="navbar-header">
       <a href="/" class="navbar-brand">
         <span><i class="fas fa-utensils"></i></span>
-        <span>Delicious-Meal</span>
+        <span>Beautiful-Meal</span>
       </a>
     </div>
     <ul class="nav navbar-nav navbar-right">
-      {% if request.endpoint != None %}
-      <li>
-        <form class="navbar-form navbar-right" action="/users">
-          <input name="q" class="form-control" placeholder="Search Ingredient" id="search">
-          <button class="btn btn-default">
-            <span class="fa fa-search"></span>
-          </button>
-        </form>
-      </li>
-      {% endif %}
       {% if not g.user %}
       <li><a href="/signup">Sign up</a></li>
       <li><a href="/login">Log in</a></li>
@@ -50,7 +39,8 @@
             {{ g.user.name }}
         </a>
       </li>
-      <li><a href="/plan/new">New Plan</a></li>
+      <li><a href="/users/add_plan">New Plan</a></li>
+      <li><a href="/users/add_recipe">New Recipe</a></li>
       <li><a href="/logout">Log out</a></li>
       {% endif %}
     </ul>
@@ -65,7 +55,9 @@
   {% endblock %}
 
 </div>
+
 <script src="https://unpkg.com/axios/dist/axios.js"></script>
 <script src="/static/delicious-meal.js"></script>
+
 </body>
 </html>

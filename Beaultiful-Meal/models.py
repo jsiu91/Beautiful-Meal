@@ -71,10 +71,53 @@ class Plan(db.Model):
 
     name = db.Column(db.Text, nullable=False)
 
-    calories = db.Column(db.Integer, nullable=False)
+    goal = db.Column(db.Integer, nullable=False)
 
-    user = db.Column(db.Text, db.ForeignKey('users.username'))
+    user_username = db.Column(db.Text, db.ForeignKey('users.username'))
 
+class Recipe(db.Model):
+    """Recipe model."""
+
+    __tablename__ = 'recipes'
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+
+    name = db.Column(db.Text, nullable=False)
+
+    energy = db.Column(db.Integer, default=0)
+
+    protein = db.Column(db.Integer, default=0)
+    
+    fat = db.Column(db.Integer, default=0)
+
+    carbohydrates = db.Column(db.Integer, default=0)
+
+    fiber = db.Column(db.Integer, default=0)
+
+    ingredients = db.relationship('Ingredient', backref='recipes', cascade='all, delete')
+
+    user_username = db.Column(db.Text, db.ForeignKey('users.username'))
+
+class Ingredient(db.Model):
+    """Ingredient model."""
+
+    __tablename__ = 'ingredients'
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+
+    name = db.Column(db.Text, nullable=False)
+
+    energy = db.Column(db.Integer, nullable=False)
+
+    protein = db.Column(db.Integer, nullable=False)
+    
+    fat = db.Column(db.Integer, nullable=False)
+
+    carbohydrates = db.Column(db.Integer, nullable=False)
+
+    fiber = db.Column(db.Integer, nullable=False)
+
+    recipe_id = db.Column(db.Integer, db.ForeignKey('recipes.id'))
 
 class Daily(db.Model):
     """Daily model."""
@@ -89,15 +132,13 @@ class Daily(db.Model):
 
     calories = db.Column(db.Integer, nullable=False)
 
-    goal = db.Column(db.Integer, nullable=False)
-
     user = db.Column(db.Text, db.ForeignKey('users.username'))
 
-    breakfast = db.relationship('Breakfast')
+    breakfast = db.relationship('Breakfast', backref='dailies', cascade='all, delete')
 
-    lunch = db.relationship('Lunch')
+    lunch = db.relationship('Lunch', backref='dailies', cascade='all, delete')
 
-    dinner = db.relationship('Dinner')
+    dinner = db.relationship('Dinner', backref='dailies', cascade='all, delete')
 
 class Breakfast(db.Model):
     """Breakfast model."""
@@ -106,11 +147,13 @@ class Breakfast(db.Model):
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
 
-    name = db.Column(db.Integer, nullable=False)
+    name = db.Column(db.Text, nullable=False)
 
     calories = db.Column(db.Integer, nullable=False)
 
     daily_id = db.Column(db.Integer, db.ForeignKey('dailies.id'))
+
+    user_username = db.Column(db.Text, db.ForeignKey('users.username'))
 
 class Lunch(db.Model):
     """Lunch model."""
@@ -119,11 +162,14 @@ class Lunch(db.Model):
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
 
-    name = db.Column(db.Integer, nullable=False)
+    name = db.Column(db.Text, nullable=False)
 
     calories = db.Column(db.Integer, nullable=False)
 
     daily_id = db.Column(db.Integer, db.ForeignKey('dailies.id'))
+
+    user_username = db.Column(db.Text, db.ForeignKey('users.username'))
+
 
 class Dinner(db.Model):
     """Breakfast model."""
@@ -132,8 +178,10 @@ class Dinner(db.Model):
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
 
-    name = db.Column(db.Integer, nullable=False)
+    name = db.Column(db.Text, nullable=False)
 
     calories = db.Column(db.Integer, nullable=False)
 
     daily_id = db.Column(db.Integer, db.ForeignKey('dailies.id'))
+
+    user_username = db.Column(db.Text, db.ForeignKey('users.username'))

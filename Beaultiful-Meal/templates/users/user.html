@@ -24,12 +24,31 @@
         <div class="row justify-content-center">
             <div class="col-6">
                 <h1>Daily Meals</h1>
+                    <h3>Calories : {{ daily.calories }}</h3>
                     <h3>Breakfast</h3>
+                    <ul class="list-group">
+                    {% for meal in daily.breakfast %}
+                        <li class="list-group-item list-group-item-warning">{{meal.name}} : {{meal.calories}} calories</li>
+                    {% endfor %}
+                    </ul>
                     <h3>Lunch</h3>
+                    <ul class="list-group">
+                        {% for meal in daily.lunch %}
+                            <li class="list-group-item list-group-item-success">{{meal.name}} : {{meal.calories}} calories</li>
+                        {% endfor %}
+                        </ul>
                     <h3>Dinner</h3>
+                    <ul class="list-group">
+                        {% for meal in daily.dinner %}
+                            <li class="list-group-item list-group-item-info">{{meal.name}} : {{meal.calories}} calories</li>
+                        {% endfor %}
+                        </ul>
             </div>
             <div class="col-6">
                 <h1>My plans</h1>
+                {% for plan in plans %}
+                    <p class="h4"><b>Name:</b> {{ plan.name }} - <b>Calories:</b> {{ plan.goal }} calories</p>
+                {% endfor %} 
             </div>
         </div>
     </div>

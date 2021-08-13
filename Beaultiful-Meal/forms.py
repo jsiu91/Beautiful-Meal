@@ -1,6 +1,7 @@
+from werkzeug.utils import validate_arguments
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, TextAreaField
-from wtforms.validators import DataRequired, Email, Length
+from wtforms import StringField, PasswordField, TextAreaField, IntegerField
+from wtforms.validators import DataRequired, Email, Length, NumberRange
 
 class MessageForm(FlaskForm):
     """Form for adding/editing messages."""
@@ -32,3 +33,14 @@ class UserEditForm(FlaskForm):
     weight = StringField('Weight', validators=[DataRequired(), Length(min=2, max=3)])
     height = StringField('Height', validators=[DataRequired(), Length(min=3, max=3)])
     password = PasswordField('Password', validators=[Length(min=6)])
+
+class PlanAddForm(FlaskForm):
+    """Plan form."""
+
+    name = StringField('Name', validators=[DataRequired()])
+    goal = IntegerField('Goal', validators=[DataRequired(), NumberRange(min=0)])
+
+class RecipeAddForm(FlaskForm):
+    """Recipe form."""
+
+    name = StringField('Name', validators=[DataRequired()])
