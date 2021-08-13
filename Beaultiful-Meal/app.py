@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, flash, redirect, session, g, 
 from models import db, connect_db, User, Plan, Daily, Breakfast, Lunch, Dinner, Recipe, Ingredient
 from forms import UserAddForm, LoginForm, UserEditForm, PlanAddForm, RecipeAddForm
 from sqlalchemy.exc import IntegrityError
-from flask_cors import cross_origin
+from flask_cors import CORS, cross_origin
 
 import os
 from datetime import datetime
@@ -10,7 +10,7 @@ from datetime import datetime
 CURR_USER_KEY = "curr_user"
 
 app = Flask(__name__)
-
+CORS(app)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = (
     os.environ.get('DATABASE_URL', 'postgresql:///beautiful-meal'))
