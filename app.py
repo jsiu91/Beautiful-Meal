@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, flash, redirect, session, g, jsonify
 from models import db, connect_db, User, Plan, Daily, Breakfast, Lunch, Dinner, Recipe, Ingredient
 from forms import UserAddForm, LoginForm, UserEditForm, PlanAddForm, RecipeAddForm
+from app import db
 from sqlalchemy.exc import IntegrityError
 from flask_cors import CORS, cross_origin
 
