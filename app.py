@@ -17,7 +17,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = (
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = False
-app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', "shhhh it's a secret")
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', "shhhh_secret")
 app.config['CORS_HEADERS'] = 'Content-Type'
 
 connect_db(app)
