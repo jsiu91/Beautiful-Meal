@@ -6,6 +6,7 @@ from sqlalchemy.exc import IntegrityError
 from flask_cors import CORS, cross_origin
 
 import os
+import re
 from datetime import datetime
 
 CURR_USER_KEY = "curr_user"
@@ -13,7 +14,10 @@ CURR_USER_KEY = "curr_user"
 app = Flask(__name__)
 CORS(app)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'postgresql:///beautiful-meal')
+uri = os.getenv("DATABASE_URL")  # or other relevant config var
+if uri.startswith("postgres://"):
+    uri = uri.replace("postgres://", "postgresql://", 1)
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get(uri, 'postgresql:///beautiful-meal')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = False
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', "shhhh_secret")
