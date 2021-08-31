@@ -1,15 +1,15 @@
 // Recipes API keys
-const APP_ID = process.env.APP_ID;
-const APP_KEY = process.env.APP_KEY;
-const BASE_API = process.env.BASE_API;
+const APP_ID = 'cf1c91b8';
+const APP_KEY = '72b1eb8d8754c0ee0300fb417f6b030';
+const BASE_API = 'https://api.edamam.com/api/recipes/v2';
 
 // Ingredients API keys
-const APP_ID_FOOD = process.env.APP_ID_FOOD;
-const APP_KEY_FOOD = process.env.APP_KEY_FOOD;
-const BASE_API_FOOD = process.env.BASE_API_FOOD;
+const APP_ID_FOOD = '775fa9c8';
+const APP_KEY_FOOD = '4f6e6cd03e0174dd06091cff9333fc4b';
+const BASE_API_FOOD = 'https://api.edamam.com/api/food-database/v2/parser';
 
 // Base Url
-const BaseUrl = process.env.baseURL || 'http://localhost:5000';
+const BaseUrl = 'https://beautiful-meal.herokuapp.com' || 'http://localhost:5000';
 
 /********* HOME FUNCTIONS *****************************************************/
 /** processRecipeForm: get data from form and make AJAX call to our 
@@ -19,10 +19,10 @@ async function processRecipeForm (evt) {
 
 	const $ingredient = $('#search_box').val();
 
-	const res = await axios.get(`${process.env.BASE_API}/?type=public&q=${$ingredient}`, {
+	const res = await axios.get(`${BASE_API}/?type=public&q=${$ingredient}`, {
 		params: {
-			app_id: process.env.APP_ID,
-			app_key: process.env.APP_KEY,
+			app_id: APP_ID,
+			app_key: APP_KEY,
 		},
 	});
 
