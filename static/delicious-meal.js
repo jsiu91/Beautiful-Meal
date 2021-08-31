@@ -1,12 +1,15 @@
 // Recipes API keys
-const APP_ID = 'cf1c91b8';
-const APP_KEY = 'c72b1eb8d8754c0ee0300fb417f6b030';
-const BASE_API = 'https://api.edamam.com/api/recipes/v2';
+const APP_ID = process.env.APP_ID;
+const APP_KEY = process.env.APP_KEY;
+const BASE_API = process.env.BASE_API;
 
 // Ingredients API keys
-const APP_ID_FOOD = '775fa9c8';
-const APP_KEY_FOOD = '4f6e6cd03e0174dd06091cff9333fc4b';
-const BASE_API_FOOD = 'https://api.edamam.com/api/food-database/v2/parser';
+const APP_ID_FOOD = process.env.APP_ID_FOOD;
+const APP_KEY_FOOD = process.env.APP_KEY_FOOD;
+const BASE_API_FOOD = process.env.BASE_API_FOOD;
+
+// Base Url
+const BaseUrl = process.env.baseURL || 'http://localhost:5000';
 
 /********* HOME FUNCTIONS *****************************************************/
 /** processRecipeForm: get data from form and make AJAX call to our 
@@ -157,7 +160,7 @@ async function addingBreakfast (evt, username) {
 
 	await axios({
 		method: 'post',
-		url: 'http://localhost:5000/users/add_breakfast',
+		url: `${BaseUrl}/users/add_breakfast`,
 		headers: {
 			'Content-Type': 'application/json',
 			'Access-Control-Allow-Origin': '*',
@@ -183,7 +186,7 @@ async function addingLunch (evt, username) {
 
 	await axios({
 		method: 'post',
-		url: 'http://localhost:5000/users/add_lunch',
+		url: `${BaseUrl}/users/add_lunch`,
 		headers: {
 			'Content-Type': 'application/json',
 			'Access-Control-Allow-Origin': '*',
@@ -208,7 +211,7 @@ async function addingDinner (evt, username) {
 
 	await axios({
 		method: 'post',
-		url: 'http://localhost:5000/users/add_dinner',
+		url: `${BaseUrl}/users/add_dinner`,
 		headers: {
 			'Content-Type': 'application/json',
 			'Access-Control-Allow-Origin': '*',
@@ -250,7 +253,7 @@ async function addingIngredient (evt, username) {
 
 	await axios({
 		method: 'post',
-		url: 'http://localhost:5000/users/add_ingredient',
+		url: `${BaseUrl}/users/add_ingredient`,
 		headers: {
 			'Content-Type': 'application/json',
 			'Access-Control-Allow-Origin': '*',
@@ -280,7 +283,7 @@ async function addingRecipeToBreakfast (evt, username) {
 
 	await axios({
 		method: 'post',
-		url: 'http://localhost:5000/users/add_breakfast',
+		url: `${BaseUrl}/users/add_breakfast`,
 		headers: {
 			'Content-Type': 'application/json',
 			'Access-Control-Allow-Origin': '*',
@@ -303,7 +306,7 @@ async function addingRecipeToLunch (evt, username) {
 
 	await axios({
 		method: 'post',
-		url: 'http://localhost:5000/users/add_lunch',
+		url: `${BaseUrl}/users/add_lunch`,
 		headers: {
 			'Content-Type': 'application/json',
 			'Access-Control-Allow-Origin': '*',
@@ -326,7 +329,7 @@ async function addingRecipeToDinner (evt, username) {
 
 	await axios({
 		method: 'post',
-		url: 'http://localhost:5000/users/add_dinner',
+		url: `${BaseUrl}/users/add_dinner`,
 		headers: {
 			'Content-Type': 'application/json',
 			'Access-Control-Allow-Origin': '*',
