@@ -19,10 +19,10 @@ async function processRecipeForm (evt) {
 
 	const $ingredient = $('#search_box').val();
 
-	const res = await axios.get(`${BASE_API}/?type=public&q=${$ingredient}`, {
+	const res = await axios.get(`${process.env.BASE_API}/?type=public&q=${$ingredient}`, {
 		params: {
-			app_id: APP_ID,
-			app_key: APP_KEY,
+			app_id: process.env.APP_ID,
+			app_key: process.env.APP_KEY,
 		},
 	});
 
