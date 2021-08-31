@@ -9,7 +9,7 @@ const APP_KEY_FOOD = '4f6e6cd03e0174dd06091cff9333fc4b';
 const BASE_API_FOOD = 'https://api.edamam.com/api/food-database/v2/parser';
 
 // Base Url
-const BaseUrl = 'https://beautiful-meal.herokuapp.com' || 'http://localhost:5000';
+const BASE_URL = 'https://beautiful-meal.herokuapp.com' || 'http://localhost:5000';
 
 /********* HOME FUNCTIONS *****************************************************/
 /** processRecipeForm: get data from form and make AJAX call to our 
@@ -160,7 +160,7 @@ async function addingBreakfast (evt, username) {
 
 	await axios({
 		method: 'post',
-		url: `${BaseUrl}/users/add_breakfast`,
+		url: `${BASE_URL}/users/add_breakfast`,
 		headers: {
 			'Content-Type': 'application/json',
 			'Access-Control-Allow-Origin': '*',
@@ -186,7 +186,7 @@ async function addingLunch (evt, username) {
 
 	await axios({
 		method: 'post',
-		url: `${BaseUrl}/users/add_lunch`,
+		url: `${BASE_URL}/users/add_lunch`,
 		headers: {
 			'Content-Type': 'application/json',
 			'Access-Control-Allow-Origin': '*',
@@ -211,7 +211,7 @@ async function addingDinner (evt, username) {
 
 	await axios({
 		method: 'post',
-		url: `${BaseUrl}/users/add_dinner`,
+		url: `${BASE_URL}/users/add_dinner`,
 		headers: {
 			'Content-Type': 'application/json',
 			'Access-Control-Allow-Origin': '*',
@@ -253,7 +253,7 @@ async function addingIngredient (evt, username) {
 
 	await axios({
 		method: 'post',
-		url: `${BaseUrl}/users/add_ingredient`,
+		url: `${BASE_URL}/users/add_ingredient`,
 		headers: {
 			'Content-Type': 'application/json',
 			'Access-Control-Allow-Origin': '*',
@@ -283,7 +283,7 @@ async function addingRecipeToBreakfast (evt, username) {
 
 	await axios({
 		method: 'post',
-		url: `${BaseUrl}/users/add_breakfast`,
+		url: `${BASE_URL}/users/add_breakfast`,
 		headers: {
 			'Content-Type': 'application/json',
 			'Access-Control-Allow-Origin': '*',
