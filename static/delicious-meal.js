@@ -1,6 +1,6 @@
 // Recipes API keys
 const APP_ID = 'cf1c91b8';
-const APP_KEY = '72b1eb8d8754c0ee0300fb417f6b030';
+const APP_KEY = 'c72b1eb8d8754c0ee0300fb417f6b030';
 const BASE_API = 'https://api.edamam.com/api/recipes/v2';
 
 // Ingredients API keys
