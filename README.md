@@ -28,6 +28,18 @@ pip install -r requirements.txt
 * Github: [@jsiu91](https://github.com/jsiu91)
 * LinkedIn: [@jsiu91](https://linkedin.com/in/jsiu91)
 
+## Stack
+
+```sh
+Javascript - HTML - CSS - Bootstrap - Jinja - Python - Flask  
+```
+
+## API
+
+```sh
+Edamam API (Nutrition Analysis and Recipe Search)
+```
+
 ## Show your support
 
 Give a ⭐️ if this project helped you!
